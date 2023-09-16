@@ -40,36 +40,40 @@
         </table>
     </div>
 
+    
     <!-- Modal de Edición -->
-    <div class="modal fade" id="editarModal" tabindex="-1" aria-labelledby="editarModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="editarModalLabel">Editar Producto</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form>
-                        <div class="mb-3">
-                            <label for="nombreProductoEditar" class="form-label">Producto</label>
-                            <input type="text" class="form-control" id="nombreProductoEditar">
-                        </div>
-                        <div class="mb-3">
-                            <label for="fechaEditar" class="form-label">Fecha</label>
-                            <input type="date" class="form-control" id="fechaEditar">
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-primary" onclick="guardarEdicion()">Guardar</button>
-                </div>
+<div class="modal fade" id="editarModal" tabindex="-1" aria-labelledby="editarModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editarModalLabel">Editar Producto</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="mb-3">
+                        <label for="nombreProductoEditar" class="form-label">Producto</label>
+                        <input type="text" class="form-control" id="nombreProductoEditar">
+                    </div>
+                    <div class="mb-3">
+                        <label for="fechaEditar" class="form-label">Fecha</label>
+                        <input type="date" class="form-control" id="fechaEditar">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" onclick="guardarEdicion()">Guardar</button>
             </div>
         </div>
     </div>
+</div>
+
 
     <script src="js/bootstrap.min.js"></script>
-    <script src="ruta/a/jquery.min.js"></script>
+    <script src="js/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.min.js"></script>
+
     <script>
         var filaId = 1; // Identificador de fila inicial
         var productosExistentes = {}; // Objeto para almacenar productos existentes
