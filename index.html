@@ -19,10 +19,53 @@
                 <label for="fecha" class="form-label">Fecha</label>
                 <input type="date" class="form-control" id="fecha">
             </div>
-            <button type="button" class="btn btn-primary">Agregar</button>
+            <button type="button" class="btn btn-primary" onclick="agregarFila()">Agregar</button>
         </form>
     </div>
+
+    <div class="container mt-3">
+        <h2>Tabla de Productos</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Editar</th>
+                    <th>Info del Producto</th>
+                    <th>Fecha</th>
+                    <th>Borrar</th>
+                </tr>
+            </thead>
+            <tbody id="tablaProductos">
+                
+                
+
+            </tbody>
+        </table>
+    </div>
+
     <script src="js/bootstrap.min.js"></script>
     <script src="ruta/a/jquery.min.js"></script>
+    <script>
+        function agregarFila() {
+            // Obtener los valores del formulario
+            var nombreProducto = document.getElementById("nombreProducto").value;
+            var fecha = document.getElementById("fecha").value;
+
+            // Crear una nueva fila en la tabla
+            var tabla = document.getElementById("tablaProductos");
+            var fila = tabla.insertRow();
+
+            // Agregar celdas a la fila
+            var cellEditar = fila.insertCell(0);
+            var cellInfo = fila.insertCell(1);
+            var cellFecha = fila.insertCell(2);
+            var cellBorrar = fila.insertCell(3);
+
+            // Rellenar las celdas con los valores del formulario
+            cellEditar.innerHTML = '<button class="btn btn-warning">Editar</button>';
+            cellInfo.innerHTML = nombreProducto;
+            cellFecha.innerHTML = fecha;
+            cellBorrar.innerHTML = '<button class="btn btn-danger">Borrar</button>';
+        }
+    </script>
 </body>
 </html>
