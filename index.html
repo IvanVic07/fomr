@@ -74,11 +74,18 @@
     <script src="ruta/a/jquery.min.js"></script>
     <script>
         var filaId = 1; // Identificador de fila inicial
+        var productosExistentes = {}; // Objeto para almacenar productos existentes
 
         function agregarFila() {
-            // Obtener los valores del formulario
+            // Obtener el nombre del producto y la fecha
             var nombreProducto = document.getElementById("nombreProducto").value;
             var fecha = document.getElementById("fecha").value;
+
+            // Validar si el producto ya existe
+            if (productosExistentes[nombreProducto]) {
+                alert("El producto ya existe.");
+                return;
+            }
 
             // Crear una nueva fila en la tabla
             var tabla = document.getElementById("tablaProductos");
@@ -102,6 +109,9 @@
             // Incrementar el identificador de fila
             filaId++;
 
+            // Agregar el producto a la lista de productos existentes
+            productosExistentes[nombreProducto] = true;
+
             // Limpiar los campos del formulario
             document.getElementById("nombreProducto").value = "";
             document.getElementById("fecha").value = "";
@@ -119,34 +129,7 @@
             document.getElementById("nombreProductoEditar").value = nombreProducto;
             document.getElementById("fechaEditar").value = fecha;
 
-            // Mostrar el modal de edición
-            var editarModal = new bootstrap.Modal(document.getElementById('editarModal'));
-            editarModal.show();
-        }
 
-        function guardarEdicion() {
-            // Obtener los valores editados desde el modal
-            var nombreProductoEditar = document.getElementById("nombreProductoEditar").value;
-            var fechaEditar = document.getElementById("fechaEditar").value;
-
-            // Actualizar los valores en la fila original
-            var filaId = document.getElementById("editarModal").getAttribute("data-fila-id");
-            var fila = document.getElementById("fila" + filaId);
-            fila.cells[1].innerHTML = nombreProductoEditar;
-            fila.cells[2].innerHTML = fechaEditar;
-
-            // Cerrar el modal de edición
-            var editarModal = new bootstrap.Modal(document.getElementById('editarModal'));
-            editarModal.hide();
-        }
-
-        function eliminarFila(id) {
-            // Obtener la fila por su identificador
-            var fila = document.getElementById("fila" + id);
-
-            // Eliminar la fila de la tabla
-            fila.parentNode.removeChild(fila);
-            //fffff
             
         }
     </script>
