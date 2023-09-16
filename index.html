@@ -36,8 +36,6 @@
             </thead>
             <tbody id="tablaProductos">
                 
-                
-
             </tbody>
         </table>
     </div>
@@ -76,95 +74,107 @@
         var filaId = 1; // Identificador de fila inicial
         var productosExistentes = {}; // Objeto para almacenar productos existentes
         
-    var filaId = 1; // Identificador de fila inicial
-    var productosExistentes = {}; // Objeto para almacenar productos existentes
+        function agregarFila() {
+            // Obtener los valores del formulario
+            var nombreProducto = document.getElementById("nombreProducto").value;
+            var fecha = document.getElementById("fecha").value;
 
-    function agregarFila() {
-        // Obtener los valores del formulario
-        var nombreProducto = document.getElementById("nombreProducto").value;
-        var fecha = document.getElementById("fecha").value;
+            // Validar si ambos campos están llenos
+            if (nombreProducto === "" || fecha === "") {
+                alert("Por favor, completa todos los campos para agregar el producto.");
+                return;
+            }
 
-        // Validar si el producto ya existe
-        if (productosExistentes[nombreProducto]) {
-            alert("El producto ya existe.");
-            return;
+            // Validar si el producto ya existe
+            if (productosExistentes[nombreProducto]) {
+                alert("El producto ya existe.");
+                return;
+            }
+
+            // Crear una nueva fila en la tabla
+            var tabla = document.getElementById("tablaProductos");
+            var fila = tabla.insertRow();
+
+            // Asignar un identificador único a la fila
+            fila.setAttribute("id", "fila" + filaId);
+
+            // Agregar celdas a la fila
+            var cellEditar = fila.insertCell(0);
+            var cellInfo = fila.insertCell(1);
+            var cellFecha = fila.insertCell(2);
+            var cellBorrar = fila.insertCell(3);
+
+            // Agregar botones de editar y eliminar en la fila
+            cellEditar.innerHTML = '<button class="btn btn-warning" onclick="editarFila(' + filaId + ')">Editar</button>';
+            cellInfo.innerHTML = nombreProducto;
+            cellFecha.innerHTML = fecha;
+            cellBorrar.innerHTML = '<button class="btn btn-danger" onclick="eliminarFila(' + filaId + ')">Borrar</button>';
+
+            // Incrementar el identificador de fila
+            filaId++;
+
+            // Agregar el producto a la lista de productos existentes
+            productosExistentes[nombreProducto] = true;
+
+            // Limpiar los campos del formulario
+            document.getElementById("nombreProducto").value = "";
+            document.getElementById("fecha").value = "";
         }
 
-        // Crear una nueva fila en la tabla
-        var tabla = document.getElementById("tablaProductos");
-        var fila = tabla.insertRow();
+        function editarFila(id) {
+            // Obtener la fila por su identificador
+            var fila = document.getElementById("fila" + id);
 
-        // Asignar un identificador único a la fila
-        fila.setAttribute("id", "fila" + filaId);
+            // Obtener los valores de la fila
+            var nombreProducto = fila.cells[1].innerHTML;
+            var fecha = fila.cells[2].innerHTML;
 
-        // Agregar celdas a la fila
-        var cellEditar = fila.insertCell(0);
-        var cellInfo = fila.insertCell(1);
-        var cellFecha = fila.insertCell(2);
-        var cellBorrar = fila.insertCell(3);
+            // Llenar el modal de edición con los valores de la fila
+            document.getElementById("nombreProductoEditar").value = nombreProducto;
+            document.getElementById("fechaEditar").value = fecha;
 
-        // Agregar botones de editar y eliminar en la fila
-        cellEditar.innerHTML = '<button class="btn btn-warning" onclick="editarFila(' + filaId + ')">Editar</button>';
-        cellInfo.innerHTML = nombreProducto;
-        cellFecha.innerHTML = fecha;
-        cellBorrar.innerHTML = '<button class="btn btn-danger" onclick="eliminarFila(' + filaId + ')">Borrar</button>';
+            // Establecer el atributo data-fila-id en el modal
+            document.getElementById("editarModal").setAttribute("data-fila-id", id);
 
-        // Incrementar el identificador de fila
-        filaId++;
+            // Mostrar el modal de edición
+            var editarModal = new bootstrap.Modal(document.getElementById('editarModal'));
+            editarModal.show();
+        }
 
-        // Agregar el producto a la lista de productos existentes
-        productosExistentes[nombreProducto] = true;
+        function guardarEdicion() {
+            // Obtener los valores editados desde el modal
+            var nombreProductoEditar = document.getElementById("nombreProductoEditar").value;
+            var fechaEditar = document.getElementById("fechaEditar").value;
 
-        // Limpiar los campos del formulario
-        document.getElementById("nombreProducto").value = "";
-        document.getElementById("fecha").value = "";
-    }
+            // Obtener el data-fila-id del modal
+            var filaId = document.getElementById("editarModal").getAttribute("data-fila-id");
 
-    function editarFila(id) {
-        // Obtener la fila por su identificador
-        var fila = document.getElementById("fila" + id);
+            // Actualizar los valores en la fila original
+            var fila = document.getElementById("fila" + filaId);
+            fila.cells[1].innerHTML = nombreProductoEditar;
+            fila.cells[2].innerHTML = fechaEditar;
 
-        // Obtener los valores de la fila
-        var nombreProducto = fila.cells[1].innerHTML;
-        var fecha = fila.cells[2].innerHTML;
+            // Cerrar el modal de edición
+            var editarModal = new bootstrap.Modal(document.getElementById('editarModal'));
+            editarModal.hide();
+        }
 
-        // Llenar el modal de edición con los valores de la fila
-        document.getElementById("nombreProductoEditar").value = nombreProducto;
-        document.getElementById("fechaEditar").value = fecha;
+        function eliminarFila(id) {
+    // Obtener la fila por su identificador
+    var fila = document.getElementById("fila" + id);
 
-        // Establecer el atributo data-fila-id en el modal
-        document.getElementById("editarModal").setAttribute("data-fila-id", id);
+    // Obtener el nombre del producto en la fila
+    var nombreProducto = fila.cells[1].innerHTML;
 
-        // Mostrar el modal de edición
-        var editarModal = new bootstrap.Modal(document.getElementById('editarModal'));
-        editarModal.show();
-    }
+    // Eliminar la fila de la tabla
+    fila.parentNode.removeChild(fila);
 
-    function guardarEdicion() {
-        // Obtener los valores editados desde el modal
-        var nombreProductoEditar = document.getElementById("nombreProductoEditar").value;
-        var fechaEditar = document.getElementById("fechaEditar").value;
-
-        // Obtener el data-fila-id del modal
-        var filaId = document.getElementById("editarModal").getAttribute("data-fila-id");
-
-        // Actualizar los valores en la fila original
-        var fila = document.getElementById("fila" + filaId);
-        fila.cells[1].innerHTML = nombreProductoEditar;
-        fila.cells[2].innerHTML = fechaEditar;
-
-        // Cerrar el modal de edición
-        var editarModal = new bootstrap.Modal(document.getElementById('editarModal'));
-        editarModal.hide();
-    }
-
-    function eliminarFila(id) {
-        // Obtener la fila por su identificador
-        var fila = document.getElementById("fila" + id);
-
-        // Eliminar la fila de la tabla
-        fila.parentNode.removeChild(fila);
-    }
-</script>
+    // Eliminar el producto de la lista de productos existentes
+    delete productosExistentes[nombreProducto];
+}
+    </script>
 </body>
 </html>
+
+
+
