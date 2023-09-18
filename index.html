@@ -1,6 +1,3 @@
-//Guardar 
-//Funcionamiento del botón guardar 
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -39,51 +36,64 @@
             </thead>
             <tbody id="tablaProductos">
                 
-                
-
             </tbody>
         </table>
     </div>
 
+    
     <!-- Modal de Edición -->
-    <div class="modal fade" id="editarModal" tabindex="-1" aria-labelledby="editarModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="editarModalLabel">Editar Producto</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form>
-                        <div class="mb-3">
-                            <label for="nombreProductoEditar" class="form-label">Producto</label>
-                            <input type="text" class="form-control" id="nombreProductoEditar">
-                        </div>
-                        <div class="mb-3">
-                            <label for="fechaEditar" class="form-label">Fecha</label>
-                            <input type="date" class="form-control" id="fechaEditar">
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-primary" onclick="guardarEdicion()">Guardar</button>
-                </div>
+<div class="modal fade" id="editarModal" tabindex="-1" aria-labelledby="editarModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editarModalLabel">Editar Producto</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="mb-3">
+                        <label for="nombreProductoEditar" class="form-label">Producto</label>
+                        <input type="text" class="form-control" id="nombreProductoEditar">
+                    </div>
+                    <div class="mb-3">
+                        <label for="fechaEditar" class="form-label">Fecha</label>
+                        <input type="date" class="form-control" id="fechaEditar">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" onclick="guardarEdicion()">Guardar</button>
             </div>
         </div>
     </div>
+</div>
+
 
     <script src="js/bootstrap.min.js"></script>
-    <script src="ruta/a/jquery.min.js"></script>
+    <script src="js/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.min.js"></script>
+
     <script>
-        
-
         var filaId = 1; // Identificador de fila inicial
-
+        var productosExistentes = {}; // Objeto para almacenar productos existentes
+        
         function agregarFila() {
             // Obtener los valores del formulario
             var nombreProducto = document.getElementById("nombreProducto").value;
             var fecha = document.getElementById("fecha").value;
+
+            // Validar si ambos campos están llenos
+            if (nombreProducto === "" || fecha === "") {
+                alert("Por favor, completa todos los campos para agregar el producto.");
+                return;
+            }
+
+            // Validar si el producto ya existe
+            if (productosExistentes[nombreProducto]) {
+                alert("El producto ya existe.");
+                return;
+            }
 
             // Crear una nueva fila en la tabla
             var tabla = document.getElementById("tablaProductos");
@@ -107,13 +117,16 @@
             // Incrementar el identificador de fila
             filaId++;
 
+            // Agregar el producto a la lista de productos existentes
+            productosExistentes[nombreProducto] = true;
+
             // Limpiar los campos del formulario
             document.getElementById("nombreProducto").value = "";
             document.getElementById("fecha").value = "";
         }
 
         function editarFila(id) {
-            // Obtener la fila por su identificador 
+            // Obtener la fila por su identificador
             var fila = document.getElementById("fila" + id);
 
             // Obtener los valores de la fila
@@ -151,15 +164,22 @@
         }
 
         function eliminarFila(id) {
-            // Obtener la fila por su identificador
-            var fila = document.getElementById("fila" + id);
+    // Obtener la fila por su identificador
+    var fila = document.getElementById("fila" + id);
 
-            // Eliminar la fila de la tabla
-            fila.parentNode.removeChild(fila);
-        }
+    // Obtener el nombre del producto en la fila
+    var nombreProducto = fila.cells[1].innerHTML;
+
+    // Eliminar la fila de la tabla
+    fila.parentNode.removeChild(fila);
+
+    // Eliminar el producto de la lista de productos existentes
+    delete productosExistentes[nombreProducto];
+}
     </script>
 </body>
 </html>
+
 
 
 
